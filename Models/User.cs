@@ -4,6 +4,8 @@ namespace ItemManagmentSystem.Models
 {
     public class User
     {
+        public Guid Id { get; set; }
+
         [Key]
         public string UserName { get; set; }
         [Required]

@@ -23,11 +23,24 @@ namespace ItemManagmentSystem.Controllers
             return Ok(await dbContext.Items.ToListAsync());
         }
 
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> Gettem([FromRoute] Guid id)
+        {
+            var item = await dbContext.Items.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return Ok(item);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> AddItems(AddItem addItem)
+        public async Task<IActionResult> AddItems(AddItemDTO addItem)
         {
             var item = new Item()
             {
+                Id = Guid.NewGuid(),
                 TaskName = addItem.TaskName,
                 TaskDescription = addItem.TaskDescription,
                 Status = addItem.Status,
@@ -37,6 +50,39 @@ namespace ItemManagmentSystem.Controllers
             await dbContext.SaveChangesAsync();
 
             return Ok(item);
+        }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> UpdateItem([FromRoute] Guid id, UpdateTimeDTO updateTimeDTO)
+        {
+            var item = await dbContext.Items.FindAsync(id);
+            if (item != null)
+            {
+                item.TaskName = updateTimeDTO.TaskName;
+                item.TaskDescription = updateTimeDTO.TaskDescription;
+                item.Status = updateTimeDTO.Status;
+                item.Attachement = updateTimeDTO.Attachement;
+
+                await dbContext.SaveChangesAsync();
+                return Ok(item);
+            }
+
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteItem([FromRoute] Guid id)
+        {
+            var item = await dbContext.Items.FindAsync(id);
+            if (item != null)
+            {
+                dbContext.Items.Remove(item);
+                await dbContext.SaveChangesAsync();
+                return Ok(item);
+            }
+            return NotFound();
         }
     }
 }

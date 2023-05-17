@@ -1,16 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ItemManagmentSystem.Models
+namespace ItemManagmentSystem.DTO
 {
-    public class Item
+    public class AddItemDTO
     {
-        [Key]
-        public Guid Id { get; set; }
-        [Required]
         public string TaskName { get; set; }
         public string TaskDescription { get; set; } = null;
-
-        [Required]
         public string Status { get; set; }
         public string Attachement { get; set; } = null;
     }
