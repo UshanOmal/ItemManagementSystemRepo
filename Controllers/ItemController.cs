@@ -1,5 +1,8 @@
 ﻿using ItemManagmentSystem.Data;
+using ItemManagmentSystem.DTO;
+using ItemManagmentSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ItemManagmentSystem.Controllers
 {
@@ -15,9 +18,25 @@ namespace ItemManagmentSystem.Controllers
 
 
         [HttpGet]
-        public IActionResult GetItems()
+        public async Task<IActionResult> GetAllItems()
         {
-            return Ok(dbContext.Items.ToList());
+            return Ok(await dbContext.Items.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddItems(AddItem addItem)
+        {
+            var item = new Item()
+            {
+                TaskName = addItem.TaskName,
+                TaskDescription = addItem.TaskDescription,
+                Status = addItem.Status,
+                Attachement = addItem.Attachement
+            };
+            await dbContext.Items.AddAsync(item);
+            await dbContext.SaveChangesAsync();
+
+            return Ok(item);
         }
     }
 }
