@@ -18,14 +18,14 @@ namespace ItemManagmentSystem.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllItems()
+        public async Task<IActionResult> GetAllItems(string Status)
         {
-            return Ok(await dbContext.Items.ToListAsync());
+            return Ok(await dbContext.Items.Where(x => x.Status == Status).ToListAsync());
         }
 
         [HttpGet]
         [Route("{id:guid}")]
-        public async Task<IActionResult> Gettem([FromRoute] Guid id)
+        public async Task<IActionResult> GetItem([FromRoute] Guid id)
         {
             var item = await dbContext.Items.FindAsync(id);
             if (item == null)
@@ -54,7 +54,7 @@ namespace ItemManagmentSystem.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        public async Task<IActionResult> UpdateItem([FromRoute] Guid id, UpdateTimeDTO updateTimeDTO)
+        public async Task<IActionResult> UpdateItem([FromRoute] Guid id, UpdateItemDTO updateTimeDTO)
         {
             var item = await dbContext.Items.FindAsync(id);
             if (item != null)

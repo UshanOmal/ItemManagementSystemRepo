@@ -1,6 +1,6 @@
 ﻿namespace ItemManagmentSystem.DTO
 {
-    public class UpdateTimeDTO
+    public class UpdateItemDTO
     {
         public string TaskName { get; set; }
         public string TaskDescription { get; set; } = null;
